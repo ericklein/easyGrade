@@ -37,8 +37,8 @@ void setup() {
   // setup LED strips
   pinMode(ledLeft, OUTPUT);
   pinMode(ledRight, OUTPUT);
-  // pinMode(ledFront, OUTPUT);
-  // pinMode(ledBack, OUTPUT);
+  // pinMode(ledTop, OUTPUT);
+  // pinMode(ledBottom, OUTPUT);
 
   // Setup button
   buttonOne.setDebounceTime(buttonDebounceDelay);
@@ -77,8 +77,9 @@ void resolveRotaryEncoder()
       analogWrite(ledActiveStrip, ledStripBrightness);
       else {
         analogWrite(ledLeft, ledStripBrightness);
-        // analogWrite(ledFront,ledStripBrightness);
         analogWrite(ledRight, ledStripBrightness);
+        analogWrite(ledTop,ledStripBrightness);
+        analogWrite(ledBottom,ledStripBrightness);
       }
     }
     encoderPosition = newEncoderPosition;
@@ -105,7 +106,7 @@ void resolveRotaryEncoder()
 //       analogWrite(ledActiveStrip, ledStripBrightness);
 //       else {
 //         analogWrite(ledLeft, ledStripBrightness);
-//         analogWrite(ledFront,ledStripBrightness);
+//         analogWrite(ledTop,ledStripBrightness);
 //         analogWrite(ledRight, ledStripBrightness);
 //       }
 //     }
@@ -117,50 +118,49 @@ void changeLEDBank()
   switch (ledActiveStrip) 
   {
     case ledNone:
-      // turn on left LED strip
+      // turn on LED strip left of card
       analogWrite(ledLeft,ledStripBrightness);
       ledActiveStrip = ledLeft;
-      debugMessage("Left LED strip is now active",1);
+      debugMessage(String("LED strip left of card only at ") + ledStripBrightness + " brightness" ,1);
       break;
     case ledLeft:
-      // switch from left to right LED strip
+      // switch from left to LED strip right of card
       analogWrite(ledLeft, 0);
       analogWrite(ledRight, ledStripBrightness);
       ledActiveStrip = ledRight;
-      debugMessage("Right LED strip is now active",1);
+      debugMessage(String("LED strip right of card only at ") + ledStripBrightness + " brightness",1);
       break;
     case ledRight:
-      // switch from right to front LED strip
+      // switch from right to LED strip top of card
       analogWrite(ledRight, 0);
-      // analogWrite(ledFront, ledStripBrightness);
-      // ledActiveStrip = ledFront;
-      ledActiveStrip = ledBack;
-      // debugMessage("Front LED strip is now active",1);
+      analogWrite(ledTop, ledStripBrightness);
+      ledActiveStrip = ledTop;
+      debugMessage(String("LED strip top of card only at ") + ledStripBrightness + " brightness",1);
       break;
-    // case ledFront:
-    //   // switch from front to back LED strip
-    //   analogWrite(ledFront, 0);
-    //   analogWrite(ledBack, ledStripBrightness);
-    //   ledActiveStrip = ledBack;
-    //   debugMessage("Back LED strip is now active",1);
-    //   break;
-    case ledBack:
+    case ledTop:
+      // switch from top to LED strip bottom of card
+      analogWrite(ledTop, 0);
+      analogWrite(ledBottom, ledStripBrightness);
+      ledActiveStrip = ledBottom;
+      debugMessage(String("LED strip bottom of card only at ") + ledStripBrightness + " brightness",1);
+      break;
+    case ledBottom:
       // turn on all LED strips
       analogWrite(ledLeft, ledStripBrightness);
       analogWrite(ledRight, ledStripBrightness);
-      // analogWrite(ledFront, ledStripBrightness);
-      // analogWrite(ledBack, ledStripBrightness);
+      analogWrite(ledTop, ledStripBrightness);
+      analogWrite(ledBottom, ledStripBrightness);
       ledActiveStrip = ledAll;
-      debugMessage("All LED strips are now active",1);
+      debugMessage(String("All LED strips at ") + ledStripBrightness + " brightness",1);
       break;      
     case ledAll:
       // turn off all LED strips
       analogWrite(ledLeft, 0);
       analogWrite(ledRight, 0);
-      // analogWrite(ledFront, 0);
-      // analogWrite(ledBack, 0);
+      analogWrite(ledTop, 0);
+      analogWrite(ledBottom, 0);
       ledActiveStrip = ledNone;
-      debugMessage("All LED strips are now off",1);
+      debugMessage("All LED strips are off",1);
       break;
   }
 }

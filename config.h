@@ -31,10 +31,10 @@ const uint8_t ledStripCycleTime = 5; // seconds
 
 enum ledStripCurrentPin {
   ledNone = 0,
-  ledLeft = 8,
-  ledRight = 9,
-  // ledFront = 10,
-  ledBack = 95,
+  ledLeft = 7,
+  ledRight = 8,
+  ledTop = 9,
+  ledBottom = 10,
   ledAll = 255
 };
 
