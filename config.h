@@ -15,7 +15,7 @@
 // Hardware configuration
 
 // LED strips
-const uint8_t ledStripMinBrightness = 100;
+const uint8_t ledStripMinBrightness = 252;
 const uint8_t ledStripMaxBrightness = 252; 
 const uint8_t ledStripBrightnessStepChange = 4;
 const uint8_t ledStripCycleTime = 5; // seconds
@@ -33,8 +33,8 @@ enum ledStripCurrentPin {
   ledNone = 0,
   ledLeft = 8,
   ledRight = 9,
-  ledFront = 10,
-  ledBack = ,
+  // ledFront = 10,
+  ledBack = 95,
   ledAll = 255
 };
 

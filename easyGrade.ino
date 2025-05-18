@@ -37,8 +37,8 @@ void setup() {
   // setup LED strips
   pinMode(ledLeft, OUTPUT);
   pinMode(ledRight, OUTPUT);
-  pinMode(ledFront, OUTPUT);
-  pinMode(ledBack, OUTPUT);
+  // pinMode(ledFront, OUTPUT);
+  // pinMode(ledBack, OUTPUT);
 
   // Setup button
   buttonOne.setDebounceTime(buttonDebounceDelay);
@@ -53,7 +53,8 @@ void loop() {
   // check if buttons were pressed
   if (buttonOne.isReleased()) {
     debugMessage("button short press",2);
-    changeLEDBank();
+    // changeLEDBank();
+    cycleLEDBanks(5000);
   }
   resolveRotaryEncoder();
 }
@@ -76,7 +77,7 @@ void resolveRotaryEncoder()
       analogWrite(ledActiveStrip, ledStripBrightness);
       else {
         analogWrite(ledLeft, ledStripBrightness);
-        analogWrite(ledFront,ledStripBrightness);
+        // analogWrite(ledFront,ledStripBrightness);
         analogWrite(ledRight, ledStripBrightness);
       }
     }
@@ -131,48 +132,50 @@ void changeLEDBank()
     case ledRight:
       // switch from right to front LED strip
       analogWrite(ledRight, 0);
-      analogWrite(ledFront, ledStripBrightness);
-      ledActiveStrip = ledFront;
-      debugMessage("Front LED strip is now active",1);
-      break;
-    case ledFront:
-      // switch from front to back LED strip
-      analogWrite(ledFront, 0);
-      analogWrite(ledBack, ledStripBrightness);
+      // analogWrite(ledFront, ledStripBrightness);
+      // ledActiveStrip = ledFront;
       ledActiveStrip = ledBack;
-      debugMessage("Back LED strip is now active",1);
+      // debugMessage("Front LED strip is now active",1);
       break;
+    // case ledFront:
+    //   // switch from front to back LED strip
+    //   analogWrite(ledFront, 0);
+    //   analogWrite(ledBack, ledStripBrightness);
+    //   ledActiveStrip = ledBack;
+    //   debugMessage("Back LED strip is now active",1);
+    //   break;
     case ledBack:
       // turn on all LED strips
       analogWrite(ledLeft, ledStripBrightness);
       analogWrite(ledRight, ledStripBrightness);
-      analogWrite(ledFront, ledStripBrightness);
+      // analogWrite(ledFront, ledStripBrightness);
+      // analogWrite(ledBack, ledStripBrightness);
       ledActiveStrip = ledAll;
       debugMessage("All LED strips are now active",1);
       break;      
     case ledAll:
       // turn off all LED strips
-      analogWrite(ledLeft, ledStripMinBrightness);
-      analogWrite(ledRight, ledStripMinBrightness);
-      analogWrite(ledFront, ledStripMinBrightness);
+      analogWrite(ledLeft, 0);
+      analogWrite(ledRight, 0);
+      // analogWrite(ledFront, 0);
+      // analogWrite(ledBack, 0);
       ledActiveStrip = ledNone;
       debugMessage("All LED strips are now off",1);
       break;
   }
 }
 
-void cycleLEDBanks(uint16_t delay)
+void cycleLEDBanks(uint16_t interval)
 // cycle all LED banks at a fixed interval
 {
-  ledActiveStrip = ledNone;
+  // ledActiveStrip = ledNone;
   do 
   {
     changeLEDBank();
-    delay(delay);
+    delay(interval);
   }
-  while (ledActiveStrip <= ledAll);
-  //delay(5000);
-  ledActiveStrip = ledNone;
+  while (ledActiveStrip < ledAll);
+  changeLEDBank();
 }
 
 void debugMessage(String messageText, int messageLevel)
